@@ -5,35 +5,71 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Vue TEST</title>
   <script src="https://cdn.jsdelivr.net/npm/vue@3.2/dist/vue.global.js"></script>
-  <style>
-    .text-green {
-      color: green;
-    }
-    .text-red {
-      color: red;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="h-full grid place-items-center">
   <div id="app">
-    <p><input type="text" name="" id="" v-model="greeting" ></p>
+    <!-- <p><input type="text" name="" id="" v-model="greeting" ></p>
     {{ greeting }}
     ({{ greeting.length }})
-    <p><button :class="active ? 'text-red' : 'text-green'" @:click="toggle">click</button></p>
+    <p><button :class="active ? 'text-red' : 'text-green'" @:click="toggle">click</button></p> -->
+    <hr>
+    <section v-show="InProgressAssignments.length">
+      <h2>なう</h2>
+      <ul>
+        <li v-for="assign in InProgressAssignments" :key="assign.id">
+          <label>
+            {{ assign.name }}
+            <input type="checkbox" name="" id="" v-model="assign.complete">
+          </label>
+        </li>
+        <!-- <pre>
+          {{ assigns }}
+        </pre> -->
+      </ul>
+    </section>
+    <hr>
+    <section v-show="computedAssignments.length">
+      <h2>完了</h2>
+      <ul>
+        <li v-for="assign in computedAssignments" :key="assign.id">
+          <label>
+            {{ assign.name }}
+            <input type="checkbox" name="" id="" v-model="assign.complete">
+          </label>
+        </li>
+        <!-- <pre>
+          {{ assigns }}
+        </pre> -->
+      </ul>
+    </section>
   </div>
-  
+
   <script>
     Vue.createApp({
       data() {
         return {
           greeting: "hello",
           active: false,
+          assigns: [
+            { id: 1, name: 'finish pj1', complete: false },
+            { id: 2, name: 'finish pj2', complete: false },
+            { id: 3, name: 'finish pj3', complete: false },
+          ]
         };
       },
       mounted() {
         setTimeout(() => {
           this.greeting = "Changed";
         }, 3000);
+      },
+      computed: {
+        InProgressAssignments() {
+          return this.assigns.filter(a => !a.complete);
+        },
+        computedAssignments() {
+          return this.assigns.filter(a => a.complete);
+        }
       },
       methods: {
         toggle() {
